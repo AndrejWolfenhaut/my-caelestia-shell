@@ -46,6 +46,8 @@ Column {
     }
 
     AnimatedImage {
+        id: sessionGif
+
         width: Config.session.sizes.button
         height: Config.session.sizes.button
         sourceSize.width: width
@@ -55,6 +57,16 @@ Column {
         asynchronous: true
         speed: Appearance.anim.sessionGifSpeed
         source: Paths.absolutePath(Config.paths.sessionGif)
+
+        smooth: false
+        mipmap: true
+
+        layer.enabled: true
+        layer.effect: ShaderEffect {
+            property Image source: sessionGif
+
+            fragmentShader: Quickshell.shellPath("assets/shaders/roundedImageCorners.frag.qsb")
+        }
     }
 
     SessionButton {

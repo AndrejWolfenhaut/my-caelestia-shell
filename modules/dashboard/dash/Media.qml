@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
+import Quickshell
 import Caelestia.Services
 import qs.components
 import qs.services
@@ -212,9 +213,11 @@ Item {
         anchors.bottomMargin: Appearance.padding.large
         anchors.margins: Appearance.padding.large * 2
 
+        smooth: false
+        mipmap: true
+
         playing: Players.active?.isPlaying ?? false
-        speed: Audio.beatTracker.bpm / Appearance.anim.mediaGifSpeedAdjustment // qmllint disable unresolved-type
-        source: Paths.absolutePath(Config.paths.mediaGif)
+        source: playing ? Paths.absolutePath(Config.paths.mediaGif) : Quickshell.shellPath("assets/crying_sky.gif")
         asynchronous: true
         fillMode: AnimatedImage.PreserveAspectFit
     }

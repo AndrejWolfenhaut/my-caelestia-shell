@@ -401,9 +401,11 @@ Item {
                 width: visualiser.width * 0.75
                 height: visualiser.height * 0.75
 
+                smooth: false
+                mipmap: true
+
                 playing: Players.active?.isPlaying ?? false
-                speed: Audio.beatTracker.bpm / Appearance.anim.mediaGifSpeedAdjustment // qmllint disable unresolved-type
-                source: Paths.absolutePath(Config.paths.mediaGif)
+                source: playing ? Paths.absolutePath(Config.paths.mediaGif) : Quickshell.shellPath("assets/crying_sky.gif")
                 asynchronous: true
                 fillMode: AnimatedImage.PreserveAspectFit
             }
