@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import qs.components
+import qs.components.images
 import qs.services
 import qs.config
 import qs.utils
@@ -45,13 +46,15 @@ Column {
         KeyNavigation.down: hibernate
     }
 
-    AnimatedImage {
+    RoundedImage {
         id: sessionGif
 
         width: Config.session.sizes.button
         height: Config.session.sizes.button
         sourceSize.width: width
         sourceSize.height: height
+        
+        radius: Appearance.rounding.large
 
         playing: visible
         asynchronous: true
@@ -60,17 +63,6 @@ Column {
 
         smooth: false
         mipmap: true
-
-        layer.enabled: true
-        layer.effect: ShaderEffect {
-            property real radius: 15
-
-            property Image source: sessionGif
-            property real a: radius / source.width
-            property real b: radius / source.height
-
-            fragmentShader: Quickshell.shellPath("assets/shaders/roundedImageCorners.frag.qsb")
-        }
     }
 
     SessionButton {
