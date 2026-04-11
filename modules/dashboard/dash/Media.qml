@@ -217,7 +217,7 @@ Item {
         mipmap: true
 
         playing: Players.active?.isPlaying ?? false
-        source: playing ? Paths.absolutePath(Config.paths.mediaGifPlaying) : Quickshell.shellPath(Config.paths.mediaGifIdle)
+        source: Paths.absolutePath(playing ? Config.paths.mediaGifPlaying : Config.paths.mediaGifIdle)
         asynchronous: true
         fillMode: AnimatedImage.PreserveAspectFit
     }
