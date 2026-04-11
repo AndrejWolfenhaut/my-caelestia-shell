@@ -405,7 +405,7 @@ Item {
                 mipmap: true
 
                 playing: Players.active?.isPlaying ?? false
-                source: playing ? Paths.absolutePath(Config.paths.mediaGif) : Quickshell.shellPath("assets/crying_sky.gif")
+                source: playing ? Paths.absolutePath(Config.paths.mediaGifPlaying) : Quickshell.shellPath(Config.paths.mediaGifIdle)
                 asynchronous: true
                 fillMode: AnimatedImage.PreserveAspectFit
             }

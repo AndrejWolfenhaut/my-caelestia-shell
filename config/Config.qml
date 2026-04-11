@@ -394,7 +394,8 @@ Singleton {
             wallpaperDir: paths.wallpaperDir,
             lyricsDir: paths.lyricsDir,
             sessionGif: paths.sessionGif,
-            mediaGif: paths.mediaGif,
+            mediaGifPlaying: paths.mediaGifPlaying,
+            mediaGifIdle: paths.mediaGifIdle,
             noNotifsPic: paths.noNotifsPic,
             lockNoNotifsPic: paths.lockNoNotifsPic
         };
