@@ -63,7 +63,11 @@ Column {
 
         layer.enabled: true
         layer.effect: ShaderEffect {
+            property real radius: 15
+
             property Image source: sessionGif
+            property real a: radius / source.width
+            property real b: radius / source.height
 
             fragmentShader: Quickshell.shellPath("assets/shaders/roundedImageCorners.frag.qsb")
         }

@@ -8,21 +8,30 @@ layout(std140, binding = 0) uniform qt_Uniforms {
     // if the built-in vertex shader is used.
     mat4 qt_Matrix;
     float qt_Opacity;
+    float a;
+    float b;
 };
 layout(binding = 1) uniform sampler2D source;
 
+
 void main(void) {
-    lowp float x, y;
-
-    x = (qt_TexCoord0.x - 0.5);
-    y = (qt_TexCoord0.y - 0.5);
-
-    float delta = fwidth(x) / 2.0;
+    float
+        x = (qt_TexCoord0.x - 0.5),
+        y = (qt_TexCoord0.y - 0.5),
+        oneMinusA = 1.0f - a,
+        oneMinusB = 1.0f - b;
     
-    fragColor = (
-        texture(source, qt_TexCoord0).rgba *
-        step(x * x + y * y, 0.25) *
-        smoothstep(x * x + y * y, 0.25 + delta, 0.25) *
-        qt_Opacity
-    );
+    vec4 color = texture(source, qt_TexCoord0).rgba * qt_Opacity;
+
+    if (abs(x) > oneMinusA && abs(y) > oneMinusB) {
+        float
+            numX = x - sign(x) * oneMinusA,
+            numY = y - sign(y) * oneMinusB,
+            e = ((numX*numX) / (a*a)) + ((numY*numY) / (b*b)),
+            eFactor = e <= 1.0f ? 1.0f : 0.0f;
+        
+        color *= eFactor;
+    }
+    
+    fragColor = color;
 }
