@@ -124,7 +124,9 @@ Column {
 
         StateLayer {
             function onClicked(): void {
-                Quickshell.execDetached(button.command);
+                console.log("Would have executed following command: " + JSON.stringify(button.command))
+
+                // Quickshell.execDetached(button.command);
             }
 
             radius: parent.radius
