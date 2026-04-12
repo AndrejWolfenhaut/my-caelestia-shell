@@ -8,6 +8,7 @@ import Quickshell.Services.Mpris
 import Caelestia.Services
 import qs.components
 import qs.components.controls
+import qs.components.images
 import qs.services
 import qs.config
 import qs.utils
@@ -395,17 +396,35 @@ Item {
             implicitWidth: visualiser.width
             implicitHeight: visualiser.height
 
-            AnimatedImage {
+            RoundedImage {
                 anchors.centerIn: parent
 
                 width: visualiser.width * 0.75
                 height: visualiser.height * 0.75
+                radius: Appearance.rounding.normal
 
                 smooth: false
                 mipmap: true
 
-                playing: Players.active?.isPlaying ?? false
-                source: Paths.absolutePath(playing ? Config.paths.mediaGifPlaying : Config.paths.mediaGifIdle)
+                playing: {
+                    const isMediaPlaying = Players.active?.isPlaying ?? false;
+                    const playMediaGifWhen = Appearance.anim.playMediaGifWhen;
+
+                    switch (playMediaGifWhen) {
+                        case "always":
+                            return true;
+                        case "never":
+                            return false;
+                        case "mediaPlaying":
+                            return isMediaPlaying;
+                        case "mediaIdle":
+                            return !isMediaPlaying;
+                        default:
+                            console.warn("\"" + playMediaGifWhen + "\" is not a valid configuration for appearance.anim.playMediaGifWhen.");
+                            return false;
+                    }
+                }
+                source: Paths.absolutePath((Players.active?.isPlaying ?? false) ? Config.paths.mediaGifPlaying : Config.paths.mediaGifIdle)
                 asynchronous: true
                 fillMode: AnimatedImage.PreserveAspectFit
             }

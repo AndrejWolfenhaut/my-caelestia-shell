@@ -82,7 +82,7 @@ Singleton {
                 }
             },
             anim: {
-                mediaGifSpeedAdjustment: 300,
+                playMediaGifWhen: "mediaPlaying",
                 sessionGifSpeed: 0.7,
                 durations: {
                     scale: appearance.anim.durations.scale
