@@ -110,10 +110,18 @@ Scope {
 
     IpcHandler {
         function toggle(drawer: string): void {
+            console.log("Trying to toggle drawer \"" + drawer + "\"...");
+
             if (list().split("\n").includes(drawer)) {
-                if (root.hasFullscreen && ["launcher", "session", "dashboard"].includes(drawer))
+                if (root.hasFullscreen && ["launcher", "session", "dashboard"].includes(drawer)) {
+                    console.log("Apparently we have fullscreen, so we are not toggling drawer \"" + drawer + "\"...");
                     return;
+                }
+
                 const visibilities = Visibilities.getForActive();
+
+                console.log("Visibilities are " + JSON.stringify(visibilities))
+
                 visibilities[drawer] = !visibilities[drawer];
             } else {
                 console.warn(lc, `Drawer "${drawer}" does not exist`);
