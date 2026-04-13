@@ -222,24 +222,31 @@ Item {
         playing: {
             const isMediaPlaying = Players.active?.isPlaying ?? false;
             const playMediaGifWhen = Appearance.anim.playMediaGifWhen;
+            let isMediaGifPlaying = false;
 
             switch (playMediaGifWhen) {
                 case "always":
-                    return true;
+                    isMediaGifPlaying = true;
+                    break;
                 case "never":
-                    return false;
+                    isMediaGifPlaying = false;
+                    break;
                 case "mediaPlaying":
-                    return isMediaPlaying;
+                    isMediaGifPlaying = isMediaPlaying;
+                    break;
                 case "mediaIdle":
-                    return !isMediaPlaying;
+                    isMediaGifPlaying = !isMediaPlaying;
+                    break;
                 default:
                     console.warn("\"" + playMediaGifWhen + "\" is not a valid configuration for appearance.anim.playMediaGifWhen.");
-                    return false;
+                    break;
             }
+
+            return isMediaGifPlaying;
         }
         source: Paths.absolutePath((Players.active?.isPlaying ?? false) ? Config.paths.mediaGifPlaying : Config.paths.mediaGifIdle)
         asynchronous: true
-        fillMode: AnimatedImage.PreserveAspectFit
+        fillMode: AnimatedImage.PreserveAspectCrop
     }
 
     component Control: StyledRect {
