@@ -124,8 +124,6 @@ Column {
 
         StateLayer {
             function onClicked(): void {
-                console.log("Executing session command: " + JSON.stringify(button.command))
-
                 Quickshell.execDetached(button.command);
             }
 
