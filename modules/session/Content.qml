@@ -54,7 +54,7 @@ Column {
         sourceSize.width: width // Weird stuff with sourceSize?
         sourceSize.height: height
         
-        radius: Appearance.rounding.large
+        radius: Tokens.rounding.large
 
         playing: visible
         asynchronous: true
