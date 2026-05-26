@@ -82,7 +82,7 @@ Singleton {
                 }
             },
             anim: {
-                playMediaGifWhen: "mediaPlaying",
+                mediaGifSpeedAdjustment: 300,
                 sessionGifSpeed: 0.7,
                 durations: {
                     scale: appearance.anim.durations.scale
@@ -394,8 +394,7 @@ Singleton {
             wallpaperDir: paths.wallpaperDir,
             lyricsDir: paths.lyricsDir,
             sessionGif: paths.sessionGif,
-            mediaGifPlaying: paths.mediaGifPlaying,
-            mediaGifIdle: paths.mediaGifIdle,
+            mediaGif: paths.mediaGif,
             noNotifsPic: paths.noNotifsPic,
             lockNoNotifsPic: paths.lockNoNotifsPic
         };

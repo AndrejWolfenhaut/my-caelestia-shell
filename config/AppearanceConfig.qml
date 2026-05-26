@@ -80,7 +80,7 @@ JsonObject {
     }
 
     component Anim: JsonObject {
-        property string playMediaGifWhen: "mediaPlaying"
+        property real mediaGifSpeedAdjustment: 300
         property real sessionGifSpeed: 0.7
         property AnimCurves curves: AnimCurves {}
         property AnimDurations durations: AnimDurations {}
