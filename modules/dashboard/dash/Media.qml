@@ -1,11 +1,11 @@
 import QtQuick
 import QtQuick.Shapes
 import Quickshell
+import Caelestia.Config
 import Caelestia.Services
 import qs.components
 import qs.components.images
 import qs.services
-import qs.config
 import qs.utils
 
 Item {
@@ -13,22 +13,22 @@ Item {
 
     property real playerProgress: {
         const active = Players.active;
-        return active?.length ? active.position / active.length : 0;
+        return active?.length ? (active.position % active.length) / active.length : 0;
     }
 
     anchors.top: parent.top
     anchors.bottom: parent.bottom
-    implicitWidth: Config.dashboard.sizes.mediaWidth
+    implicitWidth: Tokens.sizes.dashboard.mediaWidth
 
     Behavior on playerProgress {
         Anim {
-            duration: Appearance.anim.durations.large
+            type: Anim.StandardLarge
         }
     }
 
     Timer {
         running: Players.active?.isPlaying ?? false
-        interval: Config.dashboard.mediaUpdateInterval
+        interval: GlobalConfig.dashboard.mediaUpdateInterval
         triggeredOnStart: true
         repeat: true
         onTriggered: Players.active?.positionChanged()
@@ -44,16 +44,16 @@ Item {
         ShapePath {
             fillColor: "transparent"
             strokeColor: Colours.layer(Colours.palette.m3surfaceContainerHigh, 2)
-            strokeWidth: Config.dashboard.sizes.mediaProgressThickness
-            capStyle: Appearance.rounding.scale === 0 ? ShapePath.SquareCap : ShapePath.RoundCap
+            strokeWidth: root.Tokens.sizes.dashboard.mediaProgressThickness
+            capStyle: root.Tokens.rounding.scale === 0 ? ShapePath.SquareCap : ShapePath.RoundCap
 
             PathAngleArc {
                 centerX: cover.x + cover.width / 2
                 centerY: cover.y + cover.height / 2
-                radiusX: (cover.width + Config.dashboard.sizes.mediaProgressThickness) / 2 + Appearance.spacing.small
-                radiusY: (cover.height + Config.dashboard.sizes.mediaProgressThickness) / 2 + Appearance.spacing.small
-                startAngle: -90 - Config.dashboard.sizes.mediaProgressSweep / 2
-                sweepAngle: Config.dashboard.sizes.mediaProgressSweep
+                radiusX: (cover.width + root.Tokens.sizes.dashboard.mediaProgressThickness) / 2 + root.Tokens.spacing.small
+                radiusY: (cover.height + root.Tokens.sizes.dashboard.mediaProgressThickness) / 2 + root.Tokens.spacing.small
+                startAngle: -90 - root.Tokens.sizes.dashboard.mediaProgressSweep / 2
+                sweepAngle: root.Tokens.sizes.dashboard.mediaProgressSweep
             }
 
             Behavior on strokeColor {
@@ -64,16 +64,16 @@ Item {
         ShapePath {
             fillColor: "transparent"
             strokeColor: Colours.palette.m3primary
-            strokeWidth: Config.dashboard.sizes.mediaProgressThickness
-            capStyle: Appearance.rounding.scale === 0 ? ShapePath.SquareCap : ShapePath.RoundCap
+            strokeWidth: root.Tokens.sizes.dashboard.mediaProgressThickness
+            capStyle: root.Tokens.rounding.scale === 0 ? ShapePath.SquareCap : ShapePath.RoundCap
 
             PathAngleArc {
                 centerX: cover.x + cover.width / 2
                 centerY: cover.y + cover.height / 2
-                radiusX: (cover.width + Config.dashboard.sizes.mediaProgressThickness) / 2 + Appearance.spacing.small
-                radiusY: (cover.height + Config.dashboard.sizes.mediaProgressThickness) / 2 + Appearance.spacing.small
-                startAngle: -90 - Config.dashboard.sizes.mediaProgressSweep / 2
-                sweepAngle: Config.dashboard.sizes.mediaProgressSweep * root.playerProgress
+                radiusX: (cover.width + root.Tokens.sizes.dashboard.mediaProgressThickness) / 2 + root.Tokens.spacing.small
+                radiusY: (cover.height + root.Tokens.sizes.dashboard.mediaProgressThickness) / 2 + root.Tokens.spacing.small
+                startAngle: -90 - root.Tokens.sizes.dashboard.mediaProgressSweep / 2
+                sweepAngle: root.Tokens.sizes.dashboard.mediaProgressSweep * root.playerProgress
             }
 
             Behavior on strokeColor {
@@ -88,7 +88,7 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: Appearance.padding.large + Config.dashboard.sizes.mediaProgressThickness + Appearance.spacing.small
+        anchors.margins: Tokens.padding.large + Tokens.sizes.dashboard.mediaProgressThickness + Tokens.spacing.small
 
         implicitHeight: width
         color: Colours.tPalette.m3surfaceContainerHigh
@@ -111,8 +111,10 @@ Item {
             source: Players.getArtUrl(Players.active)
             asynchronous: true
             fillMode: Image.PreserveAspectCrop
-            sourceSize.width: width
-            sourceSize.height: height
+            sourceSize: {
+                const dpr = (QsWindow.window as QsWindow)?.devicePixelRatio ?? 1;
+                return Qt.size(width * dpr, height * dpr);
+            }
         }
     }
 
@@ -121,15 +123,15 @@ Item {
 
         anchors.top: cover.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: Appearance.spacing.normal
+        anchors.topMargin: Tokens.spacing.normal
 
         animate: true
         horizontalAlignment: Text.AlignHCenter
         text: (Players.active?.trackTitle ?? qsTr("No media")) || qsTr("Unknown title")
         color: Colours.palette.m3primary
-        font.pointSize: Appearance.font.size.normal
+        font.pointSize: Tokens.font.size.normal
 
-        width: parent.implicitWidth - Appearance.padding.large * 2
+        width: parent.implicitWidth - Tokens.padding.large * 2
         elide: Text.ElideRight
     }
 
@@ -138,15 +140,15 @@ Item {
 
         anchors.top: title.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: Appearance.spacing.small
+        anchors.topMargin: Tokens.spacing.small
 
         animate: true
         horizontalAlignment: Text.AlignHCenter
         text: (Players.active?.trackAlbum ?? qsTr("No media")) || qsTr("Unknown album")
         color: Colours.palette.m3outline
-        font.pointSize: Appearance.font.size.small
+        font.pointSize: Tokens.font.size.small
 
-        width: parent.implicitWidth - Appearance.padding.large * 2
+        width: parent.implicitWidth - Tokens.padding.large * 2
         elide: Text.ElideRight
     }
 
@@ -155,14 +157,14 @@ Item {
 
         anchors.top: album.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: Appearance.spacing.small
+        anchors.topMargin: Tokens.spacing.small
 
         animate: true
         horizontalAlignment: Text.AlignHCenter
         text: (Players.active?.trackArtist ?? qsTr("No media")) || qsTr("Unknown artist")
         color: Colours.palette.m3secondary
 
-        width: parent.implicitWidth - Appearance.padding.large * 2
+        width: parent.implicitWidth - Tokens.padding.large * 2
         elide: Text.ElideRight
     }
 
@@ -171,35 +173,26 @@ Item {
 
         anchors.top: artist.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: Appearance.spacing.smaller
+        anchors.topMargin: Tokens.spacing.smaller
 
-        spacing: Appearance.spacing.small
+        spacing: Tokens.spacing.small
 
-        Control {
-            function onClicked(): void {
-                Players.active?.previous();
-            }
-
+        PlayerControl {
             icon: "skip_previous"
             canUse: Players.active?.canGoPrevious ?? false
+            onClicked: Players.active?.previous()
         }
 
-        Control {
-            function onClicked(): void {
-                Players.active?.togglePlaying();
-            }
-
+        PlayerControl {
             icon: Players.active?.isPlaying ? "pause" : "play_arrow"
             canUse: Players.active?.canTogglePlaying ?? false
+            onClicked: Players.active?.togglePlaying()
         }
 
-        Control {
-            function onClicked(): void {
-                Players.active?.next();
-            }
-
+        PlayerControl {
             icon: "skip_next"
             canUse: Players.active?.canGoNext ?? false
+            onClicked: Players.active?.next()
         }
     }
 
@@ -210,18 +203,18 @@ Item {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.topMargin: Appearance.spacing.small
-        anchors.bottomMargin: Appearance.padding.large
-        anchors.margins: Appearance.padding.large * 2
+        anchors.topMargin: Tokens.spacing.small
+        anchors.bottomMargin: Tokens.padding.large
+        anchors.margins: Tokens.padding.large * 2
 
-        radius: Appearance.rounding.normal
+        radius: Tokens.rounding.normal
 
         smooth: false
         mipmap: true
 
         playing: {
             const isMediaPlaying = Players.active?.isPlaying ?? false;
-            const playMediaGifWhen = Appearance.anim.playMediaGifWhen;
+            const playMediaGifWhen = Config.general.playMediaGifWhen;
             let isMediaGifPlaying = false;
 
             switch (playMediaGifWhen) {
@@ -238,7 +231,7 @@ Item {
                     isMediaGifPlaying = !isMediaPlaying;
                     break;
                 default:
-                    console.warn("\"" + playMediaGifWhen + "\" is not a valid configuration for appearance.anim.playMediaGifWhen.");
+                    console.warn("\"" + playMediaGifWhen + "\" is not a valid configuration for general.playMediaGifWhen.");
                     break;
             }
 
@@ -249,25 +242,21 @@ Item {
         fillMode: AnimatedImage.PreserveAspectCrop
     }
 
-    component Control: StyledRect {
+    component PlayerControl: StyledRect {
         id: control
 
         required property string icon
         required property bool canUse
 
-        function onClicked(): void {
-        }
+        signal clicked
 
-        implicitWidth: Math.max(icon.implicitHeight, icon.implicitHeight) + Appearance.padding.small
+        implicitWidth: Math.max(icon.implicitHeight, icon.implicitHeight) + Tokens.padding.small
         implicitHeight: implicitWidth
 
         StateLayer {
-            function onClicked(): void {
-                control.onClicked();
-            }
-
             disabled: !control.canUse
-            radius: Appearance.rounding.full
+            radius: Tokens.rounding.full
+            onClicked: control.clicked()
         }
 
         MaterialIcon {
@@ -279,7 +268,7 @@ Item {
             animate: true
             text: control.icon
             color: control.canUse ? Colours.palette.m3onSurface : Colours.palette.m3outline
-            font.pointSize: Appearance.font.size.large
+            font.pointSize: Tokens.font.size.large
         }
     }
 }
