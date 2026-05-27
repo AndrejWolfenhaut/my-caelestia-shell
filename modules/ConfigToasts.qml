@@ -15,7 +15,9 @@ Scope {
         }
 
         function onSaveFailed(error: string, screen: string): void {
-            Toaster.toast(qsTr("Failed to save config%1").arg(screen ? " for " + screen : ""), error, "settings_alert", Toast.Error);
+            // Since the config is read-only anyway, we can disable this
+            // or else this warning pops up every time on startup...
+            // Toaster.toast(qsTr("Failed to save config%1").arg(screen ? " for " + screen : ""), error, "settings_alert", Toast.Error);
         }
 
         function onUnknownOption(key: string, screen: string): void {
