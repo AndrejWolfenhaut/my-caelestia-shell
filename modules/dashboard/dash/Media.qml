@@ -172,7 +172,7 @@ Item {
         anchors.bottomMargin: Tokens.padding.large
         anchors.margins: Tokens.padding.extraLargeIncreased
 
-        radius: Tokens.rounding.normal
+        radius: Tokens.rounding.medium
 
         smooth: false
         mipmap: true
