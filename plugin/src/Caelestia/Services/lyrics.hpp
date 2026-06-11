@@ -51,6 +51,7 @@ public:
     [[nodiscard]] QString trackTitle() const;
 
     [[nodiscard]] Q_INVOKABLE int indexForTime(qreal time) const;
+    [[nodiscard]] Q_INVOKABLE qreal timeForIndex(int index) const;
     Q_INVOKABLE void setTrack(
         const QString& artist, const QString& title, const QString& album = {}, qreal duration = 0.0);
     Q_INVOKABLE void clearTrack();
@@ -106,6 +107,7 @@ private:
     [[nodiscard]] static QString backendKey(LyricsBackend::Backend value);
     [[nodiscard]] static LyricsBackend::Backend backendFromKey(const QString& key);
 
+    [[nodiscard]] static const QString& stateDir();
     [[nodiscard]] static const QString& cacheDir();
     [[nodiscard]] static QString cachePathFor(LyricsBackend::Backend backend, const QString& id);
     [[nodiscard]] static QString readCachedLrc(LyricsBackend::Backend backend, const QString& id);
